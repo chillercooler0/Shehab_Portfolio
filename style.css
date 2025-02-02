@@ -488,7 +488,7 @@ nav .fa-bars, nav .fa-xmark {
     }
 
     nav ul {
-        background: #0074da;
+        background: #111111;
         position: fixed;
         top: 0;
         right: -200px;
@@ -497,7 +497,11 @@ nav .fa-bars, nav .fa-xmark {
         padding-top: 50px;
         z-index: 2;
         transition: right 0.5s;
+        border-top-left-radius: 20px; /* Rounded top-left corner */
+        border-bottom-left-radius: 20px; /* Rounded bottom-left corner */
+        box-shadow: 8px 8px 20px rgba(0, 116, 218, 0.8); /* Larger blue shadow */
     }
+
 
     nav ul li {
         display: block;
