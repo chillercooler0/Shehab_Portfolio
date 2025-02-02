@@ -24,6 +24,44 @@
                 </ul>
                 <i class="fa-solid fa-bars" onclick="openmenu()"></i>
             </nav>
+                <script>
+    // ... (your other scripts) ...
+
+    const sidemenu = document.getElementById("sidemenu");
+    const openMenuButton = document.getElementById("openMenu");
+    const closeMenuButton = document.getElementById("closeMenu");
+
+    openMenuButton.addEventListener('click', () => {
+        sidemenu.style.right = "0";
+    });
+
+    closeMenuButton.addEventListener('click', () => {
+        sidemenu.style.right = "-200px";
+    });
+
+    // ... (rest of your scripts) ...
+
+        var tablinks = document.getElementsByClassName("tab-links");
+        var tabcontents = document.getElementsByClassName("tab-contents");
+
+        function opentab(tabname){
+            for(tablink of tablinks){
+                tablink.classList.remove("active-link")
+            }
+            for(tabcontent of tabcontents){
+                tabcontent.classList.remove("active-tab")
+            }
+            this.classList.add("active-link") // Use 'this' here
+            document.getElementById(tabname).classList.add("active-tab")
+        }
+
+    for (let i = 0; i < tablinks.length; i++) {
+      tablinks[i].addEventListener('click', function() {
+        opentab.call(this, this.id); // Pass the clicked element as context
+      });
+    }
+
+</script>
             <div class="header-text">
                 <p>UI/UX Designer</p>
                 <h1>Hey, It's <span>Shehab</span></h1>
