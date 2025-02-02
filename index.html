@@ -22,7 +22,7 @@
                     <li><a href="#contact">Contact</a></li>
                     <i class="fa-solid fa-xmark" id="close-menu"></i>  <!-- Add ID for targeting -->
                 </ul>                
-                <i class="fa-solid fa-bars" onclick="openmenu()"></i>
+                <i class="fa-solid fa-bars" id="openMenu"></i>
             </nav>
             <div class="header-text">
                 <p>UI/UX Designer</p>
@@ -178,131 +178,118 @@
      </div>
 
      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Open and Close Menu functions
-            const sidemeu = document.getElementById("sidemenu");
-    
-            function openmenu() {
-                sidemeu.style.right = "0";
-            }
-    
-            function closemenu() {
-                sidemeu.style.right = "-200px";
-            }
-    
-            // Attach event listeners for open and close menu buttons
-            const openButton = document.querySelector('.fa-bars');
-            const closeButton = document.getElementById('close-menu'); // Use ID for the close button
-    
-            if (openButton) {
-                openButton.addEventListener('click', openmenu);
-            }
-    
-            if (closeButton) {
-                closeButton.addEventListener('click', closemenu);
-            }
-    
-            // Other functions for tab switching, image popup, etc.
-            var tablinks = document.getElementsByClassName("tab-links");
-            var tabcontents = document.getElementsByClassName("tab-contents");
-    
-            function opentab(tabname) {
-                for (tablink of tablinks) {
-                    tablink.classList.remove("active-link");
-                }
-                for (tabcontent of tabcontents) {
-                    tabcontent.classList.remove("active-tab");
-                }
-                event.currentTarget.classList.add("active-link");
-                document.getElementById(tabname).classList.add("active-tab");
-            }
-    
-            // Handle image click to show popup
-            document.querySelectorAll('.work img').forEach(image => {
-                image.onclick = () => {
-                    document.querySelector('.popup-img').style.display = 'block';
-                    document.querySelector('.popup-img img').src = image.getAttribute('src');
-                }
-            });
-    
-            // Handle span click to close the popup
-            document.querySelector('.popup-img span').onclick = () => {
-                document.querySelector('.popup-img').style.display = 'none';
-            };
-    
-            // Handle link icon click to also show the popup
-            document.querySelectorAll('.work .layer a').forEach(link => {
-                link.onclick = (event) => {
-                    event.preventDefault(); // Prevent the default link behavior
-    
-                    // Find the corresponding image in the same `.work` div
-                    const workDiv = link.closest('.work'); // Get the parent `.work` div
-                    const image = workDiv.querySelector('img'); // Find the image inside the `.work` div
-    
-                    // Show the popup with the image source
-                    document.querySelector('.popup-img').style.display = 'block';
-                    document.querySelector('.popup-img img').src = image.getAttribute('src');
-                }
-            });
-    
-            // Google Sheets form submission and Discord message handling (optional)
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbx2PPZ9bQLS4Jzqv05qCv8dD2iifuUleE-M--iJdn1Gi6cNckS8hLNLTIZJ4cJGFdzc/exec'
-            const form = document.forms['submit-to-google-sheet']
-            const msg = document.getElementById("msg")
-        
-            form.addEventListener('submit', e => {
-                e.preventDefault()
-                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(response => {
-                    msg.innerHTML = "Your message has been successfully sent, Please wait for a response."
-                    setTimeout(function(){
-                        msg.innerHTML = ""
-                    }, 5000)
-                    form.reset()
-                })
-                .catch(error => console.error('Error!', error.message))
-            });
-    
-            // Discord Username message handling
-            document.querySelector('.fa-discord').addEventListener('click', function(event) {
-                event.preventDefault();
-    
-                const discordMessage = document.getElementById('discordMessage');
-                discordMessage.innerHTML = 'Discord Username: <span>Shehab#6195</span> <i class="fa-solid fa-copy" id="copyIcon"></i>';
-    
-                discordMessage.classList.remove('show');
-                void discordMessage.offsetWidth; // Force reflow
-    
-                discordMessage.classList.add('show');
-    
-                const showDuration = 8000; // Time the message is visible (milliseconds)
-                const transitionDuration = 500; // Duration of the slide-up/down transition (milliseconds)
-    
-                setTimeout(function() {
-                    discordMessage.classList.remove('show');
-                }, showDuration);
-    
-                // Add event listener for the copy icon
-                document.getElementById('copyIcon').addEventListener('click', function() {
-                    // Create a temporary input element to copy text
-                    const tempInput = document.createElement('input');
-                    tempInput.value = 'Shehab#6195';
-                    document.body.appendChild(tempInput);
-                    tempInput.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempInput);
-    
-                    // Optionally, you can change the icon's appearance to indicate it was copied
-                    const copyIcon = document.getElementById('copyIcon');
-                    copyIcon.classList.add('copied'); // Add a class to change icon style
-                });
-    
-                // Optional: If you want to do something *after* the slide-out is complete:
-                setTimeout(function() {
-                    // Code to execute after the message has completely disappeared
-                }, showDuration + transitionDuration); // Total time before the message is fully gone
-            });
-        });
+        // Menu
+const sidemenu = document.getElementById("sidemenu");
+const openMenuButton = document.getElementById("openMenu");
+const closeMenuButton = document.getElementById("closeMenu");
+
+openMenuButton.addEventListener('click', () => {
+    sidemenu.style.right = "0";
+});
+
+closeMenuButton.addEventListener('click', () => {
+    sidemenu.style.right = "-200px";
+});
+
+// Tab switching
+const tablinks = document.getElementsByClassName("tab-links");
+const tabcontents = document.getElementsByClassName("tab-contents");
+
+function opentab(tabname) {
+    for (let tablink of tablinks) {
+        tablink.classList.remove("active-link");
+    }
+    for (let tabcontent of tabcontents) {
+        tabcontent.classList.remove("active-tab");
+    }
+    document.getElementById(tabname).classList.add("active-tab");
+    const activeTabLink = document.querySelector(`.tab-links[id="${tabname}"]`);
+    if (activeTabLink) {
+        activeTabLink.classList.add("active-link");
+    }
+}
+
+for (let tablink of tablinks) {
+    tablink.addEventListener('click', function() {
+        opentab(this.id);
+    });
+}
+
+// Image Popup
+document.querySelectorAll('.work img').forEach(image => {
+    image.onclick = () => {
+        document.querySelector('.popup-img').style.display = 'block';
+        document.querySelector('.popup-img img').src = image.getAttribute('src');
+    }
+});
+
+document.querySelector('.popup-img span').onclick = () => {
+    document.querySelector('.popup-img').style.display = 'none';
+};
+
+document.querySelectorAll('.work .layer a').forEach(link => {
+    link.onclick = (event) => {
+        event.preventDefault();
+        const workDiv = link.closest('.work');
+        const image = workDiv.querySelector('img');
+        document.querySelector('.popup-img').style.display = 'block';
+        document.querySelector('.popup-img img').src = image.getAttribute('src');
+    }
+});
+
+// Form submission
+const scriptURL = 'https://script.google.com/macros/s/AKfycbx2PPZ9bQLS4Jzqv05qCv8dD2iifuUleE-M--iJdn1Gi6cNckS8hLNLTIZJ4cJGFdzc/exec'
+const form = document.forms['submit-to-google-sheet']
+const msg = document.getElementById("msg")
+
+form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+            msg.innerHTML = "Your message has been successfully sent, Please wait for a response."
+            setTimeout(function(){
+                msg.innerHTML = ""
+            }, 5000)
+            form.reset()
+        })
+        .catch(error => console.error('Error!', error.message))
+})
+
+// Discord Message
+document.querySelector('.fa-discord').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    const discordMessage = document.getElementById('discordMessage');
+    discordMessage.innerHTML = 'Discord Username: <span>Shehab#6195</span> <i class="fa-solid fa-copy" id="copyIcon"></i>';
+
+    discordMessage.classList.remove('show');
+    void discordMessage.offsetWidth;
+
+    discordMessage.classList.add('show');
+
+    const showDuration = 8000;
+    const transitionDuration = 500;
+
+    setTimeout(function() {
+        discordMessage.classList.remove('show');
+    }, showDuration);
+
+    document.getElementById('copyIcon').addEventListener('click', function() {
+        const tempInput = document.createElement('input');
+        tempInput.value = 'Shehab#6195';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        const copyIcon = document.getElementById('copyIcon');
+        copyIcon.classList.add('copied');
+    });
+
+    setTimeout(function() {
+        // Code to execute after the message has completely disappeared
+    }, showDuration + transitionDuration);
+});
     </script>    
 
 <div id="discordMessage" class="discord-message">
