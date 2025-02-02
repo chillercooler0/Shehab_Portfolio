@@ -480,12 +480,19 @@ nav .fa-bars, nav .fa-xmark {
         font-size: 30px;
     }
 
-    /* Show .fa-bars (hamburger) and .fa-xmark (close) on smaller screens */
     nav .fa-bars, nav .fa-xmark {
         display: block;
         font-size: 25px;
         cursor: pointer;
+        transition: all 0.3s ease; /* Smooth transition for all properties */
     }
+    
+    nav .fa-bars:hover, nav .fa-xmark:hover {
+        font-size: 30px; /* Make the icons bigger on hover */
+        text-shadow: 0 0 10px #0074da, 0 0 20px #0074da, 0 0 30px #0074da; /* Outer glow effect */
+    }
+    
+
 
     nav ul {
         background: #111111;
@@ -499,7 +506,7 @@ nav .fa-bars, nav .fa-xmark {
         transition: right 0.5s;
         border-top-left-radius: 20px; /* Rounded top-left corner */
         border-bottom-left-radius: 20px; /* Rounded bottom-left corner */
-        box-shadow: 8px 8px 20px rgba(0, 116, 218, 0.8); /* Larger blue shadow */
+        box-shadow: 12px 12px 30px rgba(67, 167, 255, 0.8); /* Larger blue shadow */
     }
 
     nav ul li {
