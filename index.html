@@ -296,6 +296,24 @@
 });
 </script>
 
+<script>
+    var sidemeu = document.getElementById("sidemenu");
+
+    // Function to open the menu
+    function openmenu(){
+        sidemeu.style.right = "0";
+    }
+
+    // Function to close the menu
+    function closemenu(){
+        sidemeu.style.right = "-200px";
+    }
+
+    // Add event listener for the 'xmark' icon to close the menu
+    document.querySelector('.fa-xmark').addEventListener('click', closemenu);
+</script>
+
+
 <div id="discordMessage" class="discord-message">
     Discord Username: <span>Shehab#6195</span>
     <i class="fa-solid fa-copy" id="copyIcon"></i> <!-- Copy to clipboard icon -->
